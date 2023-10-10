@@ -9,7 +9,7 @@ export default async function Index() {
   const supabase = createServerComponentClient({ cookies })
   const { data: posts, error } = await supabase.from('posts').select('*').order('created_at', {ascending: false})
   const { data: {session} } = await supabase.auth.getSession()
-  if (!session) redirect('/error?error=Please Login First to view posts')
+  if (!session) redirect('/login?error=Please Login First to view posts')
   if (error) {
     return <DisplayPosts error={error.message} post={null} session={session} userid={session.user.id} />
   }

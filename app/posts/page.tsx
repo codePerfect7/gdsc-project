@@ -3,6 +3,8 @@ import { cookies } from 'next/headers'
 import DisplayPosts from "./DisplayPosts";
 import { redirect } from "next/navigation";
 
+export const dynamic = 'force-dynamic'
+
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies })
   const { data: posts, error } = await supabase.from('posts').select('*').order('created_at', {ascending: false})

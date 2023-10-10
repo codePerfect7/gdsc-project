@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 export const dynamic = 'force-dynamic'
 
-export default async function Index({params}: {params: {slug: string}) {
+export default async function Index({params}: {params: {slug: string}}) {
   const supabase = createServerComponentClient({ cookies })
   const { data: posts, error } = await supabase.from('posts').select('*').eq('id', params.slug)
   const { data: {session} } = await supabase.auth.getSession()

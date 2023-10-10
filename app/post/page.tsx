@@ -9,7 +9,7 @@ const page = async () => {
     const supabase = createServerComponentClient({ cookies })
     const {data: {session}} = await supabase.auth.getSession()
 
-    if (!session) redirect('/error?error=Please Login First to create a post')
+    if (!session) redirect('/login?error=Please Login First to create a post')
 
     return <ClientComponent session={session} />
 }

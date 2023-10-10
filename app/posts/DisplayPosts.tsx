@@ -52,8 +52,8 @@ const DisplayPosts = ({ post, error, session, userid }: { post: any, error: stri
         <span>{d}</span>
       </p>
       <div className="px-4 py-2 ">
-        <span className="py-2 px-10 mt-2 mr-4 bg-slate-400 border-2 border-slate-200 rounded-full text-xl font-semibold cursor-pointer" onClick={likePost}><ThumbsUp size={22} className="inline  mr-2 text-slate-50" fill={"white"} color="black" />{likes}</span>
-        <span className="py-2 px-10 mt-2 mr-4 bg-slate-400 border-2 border-slate-200 rounded-full text-xl font-semibold cursor-pointer" onClick={dislikePost}><ThumbsDown size={22} className="inline  mr-2 text-slate-50" fill={"white"} color="black" />{dislikes}</span>
+        <span className="py-2 px-4 md:px-10 mt-2 mr-1 md:mr-4 bg-slate-400 border-2 border-slate-200 rounded-full text-md md:text-xl font-semibold cursor-pointer" onClick={likePost}><ThumbsUp size={22} className="inline  mr-2 text-slate-50" fill={"white"} color="black" />{likes}</span>
+        <span className="py-2 px-4 md:px-10 mt-2 mr-1 md:mr-4 bg-slate-400 border-2 border-slate-200 rounded-full text-md md:text-xl font-semibold cursor-pointer" onClick={dislikePost}><ThumbsDown size={22} className="inline  mr-2 text-slate-50" fill={"white"} color="black" />{dislikes}</span>
       </div>
       <p ref={paraRef} className="text-foreground text-md h-[25vh] overflow-hidden px-4 py-2 transition-all duration-200 ease ">{post.content}</p>
       <button className="text-foreground font-extrabold w-full text-center bg-slate-600/80 hover:bg-slate-600/90 transition ease duration-200 rounded-b-xl " onClick={handleclick}>...</button>

@@ -15,7 +15,7 @@ const page = () => {
       if (session) setLoggedIn(true)
     }
     fetchUser()
-    if (!loggedIn) router.push('/error?error=Not logged in')
+    if (!loggedIn) router.push('/login?error=Not logged in')
   }, [loggedIn])
   const signOut = async () => {
     await supabase.auth.signOut()

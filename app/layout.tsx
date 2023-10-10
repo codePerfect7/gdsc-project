@@ -1,4 +1,7 @@
+import Navbar from '@/components/Navbar'
 import './globals.css'
+import NextTopLoader from 'nextjs-toploader'
+import {Toaster} from 'react-hot-toast'
 
 export const metadata = {
   title: 'Create Next App',
@@ -12,10 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <main className="min-h-screen bg-background flex flex-col items-center">
-          {children}
-        </main>
+      <body className='min-h-screen bg-background flex flex-col items-center'>
+        <NextTopLoader />
+        <Navbar />
+        <Toaster />
+        {children}
       </body>
     </html>
   )

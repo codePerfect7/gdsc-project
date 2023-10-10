@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 
 export const dynamic = 'force-dynamic'
 
-export default async function Index() {
+export default async function Index({params}: {params: {slug: string}) {
   const supabase = createServerComponentClient({ cookies })
-  const { data: posts, error } = await supabase.from('posts').select('*').order('created_at', {ascending: false})
+  const { data: posts, error } = await supabase.from('posts').select('*').eq('id', params.slug)
   const { data: {session} } = await supabase.auth.getSession()
   if (!session) redirect('/login?error=Please Login First to view posts')
   if (error) {
@@ -16,7 +16,7 @@ export default async function Index() {
   if (posts.length == 0) return <span className="text-foreground mt-5 text-2xl ">No posts found</span>
   return (
     <div className="w-full p-8 mt-2 flex flex-col justify-center items-center">
-      <DisplayPosts post={post} error={null} session={session} userid={session.user.id} />
+      <DisplayPosts post={posts} error={null} session={session} userid={session.user.id} />
     </div>
   )
 }

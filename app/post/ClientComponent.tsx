@@ -9,18 +9,18 @@ const ClientComponent = ({ session }: { session: Session | null }) => {
 
     const title = useRef<HTMLInputElement>(null)
     const content = useRef<HTMLTextAreaElement>(null)
-    const supabase = createClientComponentClient()
+    const supabase = createClientComponentClient<Database>()
     const router = useRouter()
 
     const handle = async () => {
-        const { data, error } = await supabase.from("posts").insert([
-            {
-                title: title.current?.value,
-                content: content.current?.value,
-            }
-        ]).select()
-        if (error) {toast.error(error.message);return}
-        else { toast.success("Post created!");await delay(2500);router.push('/posts') }
+        if (title.current?.value && content.current?.value) {
+            const { data: posts, error } = await supabase.from("posts").insert([{
+                title: title.current.value,
+                content: content.current.value,
+            }]).select().single()
+            if (error) {toast.error(error.message);return}
+            else { toast.success(`Posted ${posts.title}`);await delay(2500);router.push('/posts') }
+        }
     }
 
     return (

@@ -18,7 +18,9 @@ export default function RootLayout({
       <body className='min-h-screen bg-background flex flex-col items-center'>
         <NextTopLoader />
         <Navbar />
-        <Toaster />
+        <Toaster position='top-right' toastOptions={{style: {
+          borderRadius: "10px",background: "#333", color: "#fff", fontWeight: "800"
+        }}} />
         {children}
       </body>
     </html>

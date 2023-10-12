@@ -6,7 +6,7 @@ import { redirect } from "next/navigation"
 export const dynamic = 'force-dynamic'
 
 const page = async () => {
-    const supabase = createServerComponentClient({ cookies })
+    const supabase = createServerComponentClient<Database>({ cookies })
     const {data: {session}} = await supabase.auth.getSession()
 
     if (!session) redirect('/login?error=Please Login First to create a post')

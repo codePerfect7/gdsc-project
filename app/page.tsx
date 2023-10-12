@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 export const dynamic = 'force-dynamic'
 
 const page = async () => {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerComponentClient<Database>({ cookies })
   const { data: {session}, error } = await supabase.auth.getSession()
   let user;
   if (session) user = session.user.email || null

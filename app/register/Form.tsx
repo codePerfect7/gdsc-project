@@ -10,7 +10,7 @@ const Form = ({ session }: { session: Session | null }) => {
     const full_name = useRef<HTMLInputElement>(null)
     const email = useRef<HTMLInputElement>(null)
     const username = useRef<HTMLInputElement>(null)
-    const supabase = createClientComponentClient()
+    const supabase = createClientComponentClient<Database>()
 
     const handle = async () => {
 

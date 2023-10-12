@@ -1,30 +1,21 @@
-"use client"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { cookies } from 'next/headers'
+import { redirect } from "next/navigation"
+import ProfileSection from "./ProfileSection"
+import AccountSettings from "./AccountSettings"
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+export const dynamic = 'force-dynamic'
 
-const page = () => {
-  const supabase = createClientComponentClient()
-  const router = useRouter()
-  const [loggedIn, setLoggedIn] = useState(false)
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession()
-      if (error) alert("Error")
-      if (session) setLoggedIn(true)
-    }
-    fetchUser()
-    if (!loggedIn) router.push('/login?error=Not logged in')
-  }, [loggedIn])
-  const signOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
-  }
-
+const page = async () => {
+  const supabase = createServerComponentClient<Database>({ cookies })
+  const { data: { session }, error } = await supabase.auth.getSession()
+  if (!session) redirect('/login?error=Login to access this page')
+  const { data, error: err } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
+  if (err || (data.avatar_url == null)) redirect(`/error?error=${err?.message}`)
   return (
-    <div className="mt-10 text-foreground">
-      <button onClick={signOut}>Sign Out</button>
+    <div className="w-full lg:grid grid-flow-col grid-cols-4 text-foreground mt-5 gap-8 p-5  ">
+      <ProfileSection user={data} session={session} />
+      <AccountSettings userProfile={data} session={session} />
     </div>
   )
 }

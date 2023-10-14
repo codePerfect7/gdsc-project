@@ -63,7 +63,7 @@ const DisplayPosts = ({ postToView, session, userid }: { postToView: Post, sessi
   return (
     <div className="w-3/4 bg-slate-600/50 mt-8 rounded-2xl animate-in pt-4 " key={post.id}>
       <Link id={post.id} href={`/posts/${post.id}`} ><div className=" text-foreground text-md md:text-2xl font-bold px-4 py-2 w-full text-start   ">{post.title}</div></Link>
-      <p className="text-foreground px-4 py-1 w-full ">
+      <p className="text-foreground px-4 py-1">
         <span>{date}</span>
       </p>
       <div className="px-4 py-2 ">

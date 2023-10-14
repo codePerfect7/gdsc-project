@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { ThumbsDown, ThumbsUp } from "lucide-react"
@@ -11,7 +10,6 @@ import type { Session } from "@supabase/supabase-js"
 
 const DisplayPosts = ({ postToView, session, userid }: { postToView: Post, session: Session, userid: string }) => {
 
-  // Fixing 
   const [post, setPost] = useState<Post>(postToView)
   const supabase = createClientComponentClient<Database>()
   let dat = new Date(post.created_at)
@@ -59,17 +57,19 @@ const DisplayPosts = ({ postToView, session, userid }: { postToView: Post, sessi
   }
 
   return (
-    <div className="w-full bg-slate-600/50 mt-8 rounded-2xl animate-in pt-4 ">
-      <div className=" text-foreground text-md md:text-2xl font-bold px-4 py-2 w-full text-start   ">{post.title}</div>
-      <p className="text-foreground px-4 py-1 w-full ">
-        <span>{date}</span>
-      </p>
-      <div className="px-4 pt-2 mt-2">
-        <span className="py-2 px-4 md:px-10 mt-2 mr-1 md:mr-4 bg-slate-400 border-2 border-slate-200 rounded-full text-md md:text-xl font-semibold cursor-pointer" onClick={likePost}><ThumbsUp size={22} className="inline  mr-2 text-slate-50" fill={"white"} color="black" />{post.likes}</span>
-        <span className="py-2 px-4 md:px-10 mt-2 mr-1 md:mr-4 bg-slate-400 border-2 border-slate-200 rounded-full text-md md:text-xl font-semibold cursor-pointer" onClick={dislikePost}><ThumbsDown size={22} className="inline  mr-2 text-slate-50" fill={"white"} color="black" />{post.dislikes}</span>
+    <>
+      <div className="w-full bg-slate-600/50 mt-8 rounded-2xl animate-in pt-4 ">
+        <div className=" text-foreground text-md md:text-2xl font-bold px-4 py-2 w-full text-start   ">{post.title}</div>
+        <p className="text-foreground px-4 py-1 w-full ">
+          <span>{date}</span>
+        </p>
+        <div className="px-4 pt-2 mt-2">
+          <span className="py-2 px-4 md:px-10 mt-2 mr-1 md:mr-4 bg-slate-400 border-2 border-slate-200 rounded-full text-md md:text-xl font-semibold cursor-pointer" onClick={likePost}><ThumbsUp size={22} className="inline  mr-2 text-slate-50" fill={"white"} color="black" />{post.likes}</span>
+          <span className="py-2 px-4 md:px-10 mt-2 mr-1 md:mr-4 bg-slate-400 border-2 border-slate-200 rounded-full text-md md:text-xl font-semibold cursor-pointer" onClick={dislikePost}><ThumbsDown size={22} className="inline  mr-2 text-slate-50" fill={"white"} color="black" />{post.dislikes}</span>
+        </div>
+        <p className="text-foreground text-md overflow-hidden mt-5 px-4 py-3 transition-all duration-200 ease whitespace-pre-line " >{post.content}</p>
       </div>
-      <p className="text-foreground text-md overflow-hidden mt-5 px-4 py-3 transition-all duration-200 ease whitespace-pre-line " >{post.content}</p>
-    </div>
+    </>
   )
 }
 

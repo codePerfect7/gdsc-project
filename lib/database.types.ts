@@ -12,6 +12,7 @@ export interface Database {
       posts: {
         Row: {
           author: string
+          blog_image: string | null
           content: string
           created_at: string
           disliked_by: string[]
@@ -23,6 +24,7 @@ export interface Database {
         }
         Insert: {
           author?: string
+          blog_image?: string | null
           content: string
           created_at?: string
           disliked_by?: string[]
@@ -34,6 +36,7 @@ export interface Database {
         }
         Update: {
           author?: string
+          blog_image?: string | null
           content?: string
           created_at?: string
           disliked_by?: string[]

@@ -48,13 +48,13 @@ const DisplayPosts = ({ postToView, session, userid }: { postToView: Post, sessi
 
   useEffect(() => {
     const getPath = async (userid: string) => {
-      const { data, error } = await supabase.from('profiles').select('avatar_url,username').eq('id', post.author).single()
+      const { data: dat, error } = await supabase.from('profiles').select('avatar_url,username').eq('id', post.author)
       if (error) { toast.error(error.message); return }
-      const { data: d, error: err } = await supabase.storage.from("avatars").download(data.avatar_url)
+      const { data: d, error: err } = await supabase.storage.from("avatars").download(dat[0].avatar_url)
       if (err) { toast.error(err.message); return }
       const url = URL.createObjectURL(d)
       setUserProfile(url)
-      setUsername(data.username ?? "")
+      setUsername(dat[0].username ?? "")
     }
     getPath(post.author)
   }, [post, userProfile, username])

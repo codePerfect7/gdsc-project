@@ -30,7 +30,7 @@ const AccountSettings = ({ session, userProfile }: { session: Session, userProfi
       setPath(url)
     }
     getPath(avatarUrl)
-  }, [avatarUrl, user, path])
+  }, [user])
 
   useEffect(() => {
     const channel = supabase.channel('').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, payload => {
@@ -41,27 +41,11 @@ const AccountSettings = ({ session, userProfile }: { session: Session, userProfi
     }
   }, [supabase, setUser, user])
 
-  const toBase64 = async (file: File) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader()
-      fileReader.readAsDataURL(file)
-      fileReader.onload = () => { resolve(fileReader.result) }
-      fileReader.onerror = (error) => { reject(error) }
-    })
-  }
-
   const onFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     let fil = e.target.files[0]
     if (!fil) return
     const toastid = toast.loading("Loading image")
-    // Old
-
-    // const base64 = await toBase64(fil as File)
-    // console.log(base64 as string)
-    // const { error } = await supabase.from('profiles').update({ avatar_url: (base64 as string) }).eq('username', user.username ?? "")
-    // if (error) toast.error(error.message)
-    // else toast.success("Updated")
 
     // New 
     fil = fil as File

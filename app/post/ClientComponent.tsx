@@ -41,6 +41,11 @@ const ClientComponent = ({ session }: { session: Session | null }) => {
                     </div>
                 </div>
                 <div className="block md:flex my-8">
+                    <div className="w-full h-48 my-10 mx-0 md:mx-5 md:my-0 relative">
+                        <input type="file" accept="image/*"  />
+                    </div>
+                </div>
+                <div className="block md:flex my-8">
                     <div className="w-full p-4 flex justify-center items-center ">
                         <input type="submit" value="Submit" className="mx-auto py-4 px-10 text-xl font-semibold bg-slate-600/50 hover:bg-slate-700 transition-all duration-200 ease cursor-pointer rounded-3xl  " onClick={handle} />
                     </div>

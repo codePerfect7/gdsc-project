@@ -50,19 +50,19 @@ export interface Database {
       }
       profiles: {
         Row: {
-          avatar_url: string | null
+          avatar_url: string
           email: string
           id: string
           username: string | null
         }
         Insert: {
-          avatar_url?: string | null
+          avatar_url?: string
           email?: string
           id?: string
           username?: string | null
         }
         Update: {
-          avatar_url?: string | null
+          avatar_url?: string
           email?: string
           id?: string
           username?: string | null
@@ -74,19 +74,6 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      delete_avatar: {
-        Args: {
-          avatar_url: string
-        }
-        Returns: Record<string, unknown>
-      }
-      delete_storage_object: {
-        Args: {
-          bucket: string
-          object: string
-        }
-        Returns: Record<string, unknown>
-      }
       dislike_post: {
         Args: {
           postid: string

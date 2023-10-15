@@ -12,12 +12,26 @@ import delay from "@/components/delay"
 
 const AccountSettings = ({ session, userProfile }: { session: Session, userProfile: Profile }) => {
   const [user, setUser] = useState<Profile>(userProfile)
+  const [avatarUrl, setAvatarUrl] = useState<string>(user.avatar_url)
+  const [path, setPath] = useState<string>("")
   const username = useRef<HTMLInputElement>(null)
   const supabase = createClientComponentClient<Database>()
   const handle = async (url: string | null = null) => {
     if (url) { const { error } = await supabase.from('profiles').update({ avatar_url: url }).eq('id', user.id); if (error) toast.error(error.message); else toast.success("Updated") }
     else { const { error } = await supabase.from('profiles').update({ username: username.current?.value }).eq('id', user.id); if (error) toast.error(error.message); else toast.success("Updated") }
   }
+
+  useEffect(() => {
+    setAvatarUrl(user.avatar_url)
+    const getPath = async (path: string) => {
+      const { data, error } = await supabase.storage.from("avatars").download(path)
+      if (error) { toast.error(error.message); return }
+      const url = URL.createObjectURL(data)
+      setPath(url)
+    }
+    getPath(avatarUrl)
+  }, [avatarUrl, user, path])
+
   useEffect(() => {
     const channel = supabase.channel('').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, payload => {
       setUser(payload.new as Profile)
@@ -41,12 +55,29 @@ const AccountSettings = ({ session, userProfile }: { session: Session, userProfi
     let fil = e.target.files[0]
     if (!fil) return
     const toastid = toast.loading("Loading image")
-    const base64 = await toBase64(fil as File)
-    console.log(base64 as string)
-    const { error } = await supabase.from('profiles').update({ avatar_url: base64 as string }).eq('id', user.id)
-    if (error) toast.error(error.message)
-    else toast.success("Updated")
+    // Old
+
+    // const base64 = await toBase64(fil as File)
+    // console.log(base64 as string)
+    // const { error } = await supabase.from('profiles').update({ avatar_url: (base64 as string) }).eq('username', user.username ?? "")
+    // if (error) toast.error(error.message)
+    // else toast.success("Updated")
+
+    // New 
+    fil = fil as File
+    const fileExt = fil.name.split('.').pop()
+    const filePath = `${user.id}-${Math.random()}.${fileExt}`
+    let { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, fil)
+    if (uploadError) {toast.error(uploadError.message);return}
+    const { data, error } = await supabase.storage.from("avatars").download(filePath)
+    if (error) {toast.error(error.message);return}
+    const url = URL.createObjectURL(data)
+    let { error: err } = await supabase.from('profiles').update({ avatar_url: filePath }).eq('id', user.id)
+    if (err) {toast.error(err.message);return}
+
     toast.dismiss(toastid)
+    toast.success("Done")
+    e.target.value = ""
   }
 
   return (
@@ -54,8 +85,8 @@ const AccountSettings = ({ session, userProfile }: { session: Session, userProfi
       <div className="col-span-1 lg:h-[75vh] lg:sticky lg:top-[21vh] w-full">
         <div className="w-full h-full ">
           <div className="w-full  aspect-square max-h-[200px] relative">
-            {user.avatar_url ? <Image src={user.avatar_url ?? ""} alt="Avatar" width={150} height={150} className="rounded-full absolute -z-10 top-0 left-1/2 -translate-x-1/2 translate-y-[25%] outline outline-4 outline-slate-200" /> : 
-            <div className="text-background absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold text-2xl bg-slate-300 rounded-full py-2  text-center  ">No image (error)</div>}
+            {user.avatar_url ? <Image src={path} alt="Avatar" width={150} height={150} className="rounded-full absolute -z-10 top-0 left-1/2 -translate-x-1/2 translate-y-[25%] outline outline-4 outline-slate-200" /> :
+              <div className="text-background absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold text-2xl bg-slate-300 rounded-full py-2  text-center  ">No image (error)</div>}
             <input className=" opacity-0 absolute z-50 top-full left-1/2 lg:left-3/4 -translate-x-1/2 -translate-y-3/4 w-[48px] aspect-square cursor-pointer  peer " type="file" name="avatar" accept="image/*" onChange={onFileChange} />
             <div className=" p-3  bg-slate-700 rounded-full  absolute z-10 top-full left-1/2 lg:left-3/4 -translate-x-1/2 -translate-y-3/4 hover:bg-slate-600 peer-hover:bg-slate-600 transition-all duration-150 ease cursor-pointer text-3xl text-center select-none"><SwitchCamera /></div>
           </div>

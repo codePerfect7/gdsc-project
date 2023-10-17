@@ -9,6 +9,7 @@ import { dislike_post, like_post, remove_dislike, remove_like } from "@/componen
 import type { Session } from "@supabase/supabase-js"
 import Image from "next/image"
 import toast from "react-hot-toast"
+import ImageComponent from "./Image"
 
 const DisplayPosts = ({ postToView, session, userid }: { postToView: Post, session: Session, userid: string }) => {
 
@@ -16,6 +17,7 @@ const DisplayPosts = ({ postToView, session, userid }: { postToView: Post, sessi
   const [userProfile, setUserProfile] = useState<string>("")
   const [username, setUsername] = useState<string>("")
   const supabase = createClientComponentClient<Database>()
+  let blog_url = post.blog_image
   let dat = new Date(post.created_at)
   let date = dat.toLocaleDateString('en-IN') + ' ' + dat.toLocaleTimeString('en-IN')
 
@@ -33,16 +35,6 @@ const DisplayPosts = ({ postToView, session, userid }: { postToView: Post, sessi
   }, [supabase, setPost, post])
 
   useEffect(() => {
-    const updateChange = async () => {
-      if (post != null) {
-        const { error } = await supabase.from('posts').update(post).eq('id', post.id)
-        if (error) console.log(error.message)
-      }
-    }
-    updateChange()
-  }, [post])
-
-  useEffect(() => {
     const getPath = async (userid: string) => {
       const { data, error } = await supabase.from('profiles').select('avatar_url,username').eq('id', post.author).single()
       if (error) { toast.error(error.message); return }
@@ -53,7 +45,7 @@ const DisplayPosts = ({ postToView, session, userid }: { postToView: Post, sessi
       setUsername(data.username ?? "")
     }
     getPath(post.author)
-  }, [post, userProfile, username])
+  }, [post, userProfile, setUserProfile, username, setUsername])
 
   const likePost = async () => {
     if (post.liked_by.includes(userid)) await remove_like(supabase, post.id, userid)

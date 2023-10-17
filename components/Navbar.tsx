@@ -3,6 +3,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import image from './TchHub.gif';
+import Image from "next/image";
 
 const linkass: Function = ({ href, name, className, active, key }: { href: string, name: string, className: string | null, active: boolean | null, key: string | null }) => {
     return <Link href={href} key={key ? key : ""} className={`relative rounded-full px-3 py-1.5 text-slate-200 ${active ? "" : "hover:text-red-100/50"} transition ${className ? className : ""} `}  >
@@ -41,6 +43,7 @@ export default function Navbar() {
                     {linkass({ href: "/posts", name: "Posts",  active: (page == "Posts") })}
                     {linkass({ href: "/account", name: "Account",  active: (page == "Account") })}
                     {linkass({ href: "/post", name: "Post",  active: (page == "Post") })} */}
+                    <Link href='/' className="text-sm md:text-base font-extrabold leading-3 md:leading-4 self-center bg-white text-slate-800 p-1 px-2 rounded-2xl  ">TCH<br />HUB</Link>
                     {Array.from(pages).map(([key, value]) => {
                         return linkass({ href: key, name: value, active: (page == value), key: value})
                     })}

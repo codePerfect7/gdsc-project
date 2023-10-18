@@ -42,8 +42,8 @@ const ClientComponent = ({ session }: { session: Session | null }) => {
                     title: title.current.value,
                     content: content.current.value,
                 }]).select().single()
-                if (error) {toast.error(error.message);return}
-                else { toast.success(`Posted ${posts.title}`);await delay(2500);router.push('/posts') }
+                if (error) { toast.error(error.message); return }
+                else { toast.success(`Posted ${posts.title}`); await delay(2500); router.push('/posts') }
             } else {
                 const base64 = await toBase64(file as File)
                 setBase(base64 as string)
@@ -52,8 +52,8 @@ const ClientComponent = ({ session }: { session: Session | null }) => {
                     content: content.current.value,
                     blog_image: base64 as string
                 }]).select().single()
-                if (error) {toast.error(error.message);return}
-                else { toast.success(`Posted ${posts.title}`);await delay(2500);router.push('/posts') }
+                if (error) { toast.error(error.message); return }
+                else { toast.success(`Posted ${posts.title}`); await delay(2500); router.push('/posts') }
             }
         }
     }
@@ -76,10 +76,25 @@ const ClientComponent = ({ session }: { session: Session | null }) => {
                     </div>
                 </div>
                 <div className="block md:flex my-8">
-                    <div className="w-full h-48 my-10 mx-0 md:mx-5 md:my-0 relative">
-                        <input type="file" className="" accept="image/*" name="avatar" onChange={onFileChange} onClick={handleClick} />
+                    <div className="flex items-center justify-center w-full">
+                        <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                {file == null ? <><svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                </svg>
+                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (Prefer using 16x9 Images)</p></> : <span className="text-base md:text-2xl font-bold ">Selected File: {file.name}</span>}
+                            </div>
+                            <input id="dropzone-file" type="file" className="hidden" accept="image/*" onChange={onFileChange} onClick={handleClick} />
+                        </label>
                     </div>
                 </div>
+                {/* <div className="block md:flex my-8">
+                    <div className="w-full min-h-[4rem] my-10 mx-0 md:mx-5 md:my-0 relative">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload file</label>
+                        <input type="file" className=" block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" accept="image/*" name="avatar" id="file_input" onChange={onFileChange} onClick={handleClick} />
+                    </div>
+                </div> */}
                 <div className="block md:flex my-8">
                     <div className="w-full p-4 flex justify-center items-center ">
                         <input type="submit" value="Submit" className="mx-auto py-4 px-10 text-xl font-semibold bg-slate-600/50 hover:bg-slate-700 transition-all duration-200 ease cursor-pointer rounded-3xl  " />

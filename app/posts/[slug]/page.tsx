@@ -6,6 +6,10 @@ import ImageComponent from "./Image";
 
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: "Posts - TCH Hub"
+}
+
 export default async function Index({params}: {params: {slug: string}}) {
   const supabase = createServerComponentClient<Database>({ cookies })
   const { data: posts, error } = await supabase.from('posts').select('*').eq('id', params.slug)

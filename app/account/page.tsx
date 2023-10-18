@@ -5,6 +5,10 @@ import AccountSettings from "./AccountSettings"
 
 export const dynamic = 'force-dynamic'
 
+export const metadata = {
+  title: "Account - TCH Hub"
+}
+
 const page = async () => {
   const supabase = createServerComponentClient<Database>({ cookies })
   const { data: { session }, error } = await supabase.auth.getSession()

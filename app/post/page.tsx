@@ -5,6 +5,10 @@ import { redirect } from "next/navigation"
 
 export const dynamic = 'force-dynamic'
 
+export const metadata = {
+  title: "Post - TCH Hub"
+}
+
 const page = async () => {
     const supabase = createServerComponentClient<Database>({ cookies })
     const {data: {session}} = await supabase.auth.getSession()

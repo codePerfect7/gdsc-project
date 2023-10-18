@@ -5,6 +5,10 @@ import { redirect, usePathname } from "next/navigation";
 
 export const dynamic = 'force-dynamic'
 
+export const metadata = {
+  title: "Posts - TCH Hub"
+}
+
 export default async function Index() {
   const supabase = createServerComponentClient<Database>({ cookies })
   const { data: posts, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false })

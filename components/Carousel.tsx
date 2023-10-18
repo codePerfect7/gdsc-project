@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 const Carousel = ({ posts }: { posts: Post[] }) => {
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
+
     let slides: any[] = [];
     posts.map((post) => {
         slides.push({
@@ -14,54 +14,31 @@ const Carousel = ({ posts }: { posts: Post[] }) => {
             title: post.title,
         })
     })
+    const [currentSlide, setCurrentSlide] = useState<number>(1)
 
-    const prevSlide = () => {
-        const isFirstSlide = currentIndex === 0;
-        const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
-        setCurrentIndex(newIndex);
-    };
+    const prevSlide = () => setCurrentSlide(current => current - 1)
 
-    const nextSlide = () => {
-        const isLastSlide = currentIndex === slides.length - 1;
-        const newIndex = isLastSlide ? 0 : currentIndex + 1;
-        setCurrentIndex(newIndex);
-    };
-
-    const goToSlide = (slideIndex: number) => {
-        setCurrentIndex(slideIndex);
-    };
+    const nextSlide = () => setCurrentSlide(current => current + 1)
 
     return (
-        <div className='max-w-[960px] h-[540px] w-full m-auto py-16 px-4 relative group'>
-            <Link href={`/blog/${posts[currentIndex].id}`}>
-                <div 
-                    style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-                    className='w-full h-full rounded-2xl bg-center bg-cover duration-500 relative'
-                >
-                    <div className="absolute text-foreground text-2xl underline decoration-2 underline-offset-4 font-bold  bottom-4 bg-black/90 p-3 rounded-2xl left-1/2 -translate-x-1/2  ">{slides[currentIndex].title}</div>
+        <div className='overflow-hidden max-w-[960px] h-[540px] w-full mt-10 p-4 py-8 mb-8 '>
+            <div className="relative overflow-hidden">
+                <div  className="flex transition-transform ease-out duration-200" 
+                    style={{ transform: `translateX(-${(Math.abs(currentSlide) % slides.length) * 100}%)` }}>
+                    {slides.map((slide, index) => {
+                        return <img src={slide.url} alt="Image" className="rounded-2xl cursor-pointer" key={index} />
+                    })}
                 </div>
-            </Link>
-            {/* Left Arrow */}
-            <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
-                <ArrowLeft onClick={prevSlide} size={30} />
-            </div>
-            {/* Right Arrow */}
-            <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
-                <ArrowRight onClick={nextSlide} size={30} />
-            </div>
-            <div className='flex top-4 justify-center py-2'>
-                {slides.map((slide, slideIndex) => (
-                    <div
-                        key={slideIndex}
-                        onClick={() => goToSlide(slideIndex)}
-                        className='text-2xl cursor-pointer'
-                    >
-                        <Dot />
-                    </div>
-                ))}
+                <Link href={`/posts/${slides[Math.abs(currentSlide) % slides.length].id}`} className="absolute top-3/4 z-50 left-1/2 -translate-x-1/2 text-base md:text-2xl bg-black/80 text-white p-2 px-4 rounded-2xl hover:underline hover:bg-black transition-all duration-150 ease-out   text-foreground">
+                    {slides[Math.abs(currentSlide) % slides.length].title}
+                </Link>
+                <div className="absolute inset-0 text-gray flex items-center justify-between p-4">
+                    <button className="p-1 rounded-full shadow bg-white/30 hover:bg-white/75 transition-all duration-200 ease-linear  " onClick={prevSlide}><ArrowLeft size={40} className="p-2 full cursor-pointer transition-all duration-150 ease-in " /></button>
+                    <button className="p-1 rounded-full shadow bg-white/30 hover:bg-white/75 transition-all duration-200 ease-linear  " onClick={nextSlide}><ArrowRight size={40} className="p-2 full cursor-pointer transition-all duration-150 ease-in " /></button>
+                </div>
             </div>
         </div>
-    );
+    )
 }
 
 export default Carousel

@@ -36,7 +36,7 @@ export default function Navbar() {
         else setPage("")
     }, [path])
     return (
-        <div className="w-screen flex justify-center items-center text-foreground pt-6 sticky top-2 z-10  ">
+        <div className="w-screen flex justify-center select-none items-center text-foreground pt-6 sticky top-2 z-10  ">
             <div className="p-2 md:p-4 font-semibold text-sm md:text-2xl rounded-full bg-slate-900 ring ring-offset-2 ring-slate-200 backdrop-filter backdrop-blur-2xl  ">
                 <div className="flex space-x-0.5 md:space-x-2 px-3">
                     {/* {linkass({ href: "/", name: "Home",  active: (page == "Home") })}

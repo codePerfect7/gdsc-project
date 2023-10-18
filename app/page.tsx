@@ -13,7 +13,10 @@ const page = async () => {
   const { data, error: err } = await supabase.from("posts").select("*").neq("blog_image", null)
   if (err) redirect(`/error?error=${err.message}`)
   return (
+    <>
+    <div className="text-foreground text-3xl font-extrabold bg-slate-700/50 p-3 rounded-2xl mt-8 flex-1 -mb-4">Featured Posts</div>
       <Carousel posts={data} />
+    </>
   )
 }
 

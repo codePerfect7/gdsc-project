@@ -6,7 +6,9 @@ const page = () => {
     const router = useRouter()
     const params = useSearchParams()
     const error = params.get('error')
-    if (error) return <div className="text-red-600 bg-slate-200 text-5xl mt-10 p-4">{error}</div>
+    if (error) return <div className="flex-1">
+        <div className="text-red-600 font-bold max-w-2xl break-words bg-slate-200 text-5xl mt-10 p-6 rounded-2xl ">{error}</div>
+    </div>
     else router.push('/')
 }
 
